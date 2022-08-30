@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jackson.p2padmin2022.user.mapper.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.jackson.p2padmin2022.user.model.UserInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="loginCount" jdbcType="INTEGER" property="logincount" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
+    <result column="staffId" jdbcType="INTEGER" property="staffid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, createDate, loginCount, lastLoginTime, staffId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from u_user_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from u_user_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jackson.p2padmin2022.user.model.UserInfo">
+    insert into u_user_info (id, username, password, 
+      createDate, loginCount, lastLoginTime, 
+      staffId)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{logincount,jdbcType=INTEGER}, #{lastlogintime,jdbcType=TIMESTAMP}, 
+      #{staffid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jackson.p2padmin2022.user.model.UserInfo">
+    insert into u_user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="createdate != null">
+        createDate,
+      </if>
+      <if test="logincount != null">
+        loginCount,
+      </if>
+      <if test="lastlogintime != null">
+        lastLoginTime,
+      </if>
+      <if test="staffid != null">
+        staffId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logincount != null">
+        #{logincount,jdbcType=INTEGER},
+      </if>
+      <if test="lastlogintime != null">
+        #{lastlogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffid != null">
+        #{staffid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jackson.p2padmin2022.user.model.UserInfo">
+    update u_user_info
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logincount != null">
+        loginCount = #{logincount,jdbcType=INTEGER},
+      </if>
+      <if test="lastlogintime != null">
+        lastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffid != null">
+        staffId = #{staffid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jackson.p2padmin2022.user.model.UserInfo">
+    update u_user_info
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      loginCount = #{logincount,jdbcType=INTEGER},
+      lastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
+      staffId = #{staffid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--登录查询是否存在该用户-->
+  <select id="login" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      u_user_info
+    where
+      username = #{username} and password = #{password}
+  </select>
+
+  <!--更新登录次数和登录时间-->
+  <update id="updateLoginCountAndLoginTimeById">
+    update
+      u_user_info
+    set
+      loginCount = #{logincount} and lastLoginTime = #{lastlogintime}
+    where
+      id = #{id}
+  </update>
+</mapper>
