@@ -4,6 +4,7 @@ import com.jackson.p2padmin2022.user.model.PermissionInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PermissionInfoMapper {
@@ -22,4 +23,6 @@ public interface PermissionInfoMapper {
     List<PermissionInfo> selectPermissionMenuByUid(Integer uid, Integer pid);
 
     List<String> selectPermissionUrlByUid(Integer uid);
+
+    List<Map> getPermissionTree(Integer roleId);
 }

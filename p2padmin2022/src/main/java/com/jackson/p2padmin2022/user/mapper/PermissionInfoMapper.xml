@@ -148,4 +148,17 @@
     where
       user_id = #{uid} and url is not null
   </select>
+
+  <select id="getPermissionTree" resultType="java.util.Map">
+    select
+      pi.id,pi.name,pi.parentid pId,rp.role_id checked
+    from
+	  u_permission_info pi
+    left join
+	  u_role_permission rp
+    on
+	  pi.id = rp.permission_id and role_id = #{roldId}
+    order by
+      pi.id
+  </select>
 </mapper>
