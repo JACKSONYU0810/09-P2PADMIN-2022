@@ -29,7 +29,6 @@ public class UserController {
     @RequestMapping("/")
     public String toLogin(HttpServletRequest request,Model model,HttpServletResponse response,String isAutoLogin){
 
-
         Cookie[] cookies = request.getCookies();
         String admin = null;
         String password = null;
@@ -77,7 +76,6 @@ public class UserController {
 
         }
 
-
         return "index";
     }
 
@@ -89,6 +87,7 @@ public class UserController {
 
     @RequestMapping("/login")
     public String login(UserInfo userInfo, String isAutoLogin, Model model, HttpServletRequest request, HttpServletResponse response){
+
 
         userInfo = userService.login(userInfo);
 
@@ -137,5 +136,12 @@ public class UserController {
         return "login";
     }
 
+
+    @RequestMapping("/noPermission")
+    public String noPermission(Model model){
+        model.addAttribute("errorMessage", "对不起，您没有权限");
+        model.addAttribute("helpMessage", "请联系管理员");
+        return "error";
+    }
 
 }

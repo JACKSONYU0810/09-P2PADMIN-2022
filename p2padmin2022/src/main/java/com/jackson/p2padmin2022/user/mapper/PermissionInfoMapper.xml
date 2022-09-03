@@ -139,4 +139,13 @@
     where
 	  type = "menu" and parentid = #{pid} and user_id = #{uid}
   </select>
+
+  <select id="selectPermissionUrlByUid" resultType="java.lang.String">
+    select
+      distinct url
+    from
+      v_permission_role_user
+    where
+      user_id = #{uid} and url is not null
+  </select>
 </mapper>

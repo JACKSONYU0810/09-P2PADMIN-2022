@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,6 +46,14 @@ public class UserServiceImpl implements UserService {
         //根据用户id，查询对应的菜单权限，并添加到用户信息中
         List<PermissionInfo> permissionInfoList = permissionInfoMapper.selectPermissionMenuByUid(userInfo.getId(),1);
         userInfo.setPermissionInfoList(permissionInfoList);
+
+        //根据用户id，获取对应权限的url
+        List<String> urlList = permissionInfoMapper.selectPermissionUrlByUid(userInfo.getId());
+        HashMap<String, String> urlMap = new HashMap<>();
+        for (String url : urlList) {
+            urlMap.put(url, "");
+        }
+        userInfo.setMap(urlMap);
 
         return userInfo;
     }

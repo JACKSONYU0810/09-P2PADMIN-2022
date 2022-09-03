@@ -3,6 +3,7 @@ package com.jackson.p2padmin2022.user.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class UserInfo {
     private Integer id;
@@ -18,6 +19,17 @@ public class UserInfo {
     private Date lastlogintime;
 
     private Integer staffid;
+
+    private Map<String,String> map;
+
+    public Map<String, String> getMap() {
+        return map;
+    }
+
+    public UserInfo setMap(Map<String, String> map) {
+        this.map = map;
+        return this;
+    }
 
     private List<PermissionInfo> permissionInfoList = new ArrayList<>();
 
