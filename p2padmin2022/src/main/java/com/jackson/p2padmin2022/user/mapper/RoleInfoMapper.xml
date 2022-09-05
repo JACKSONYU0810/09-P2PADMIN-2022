@@ -75,4 +75,14 @@
     from
       u_role_info
   </select>
+
+  <delete id="deletePermissionByRoleId">
+    delete from u_role_permission where role_id = #{roleId}
+  </delete>
+
+  <insert id="insertPermissionByRoleIdAndPerId">
+    insert into u_role_permission(role_id, permission_id) value(#{roleId},#{pid})
+  </insert>
+
+
 </mapper>

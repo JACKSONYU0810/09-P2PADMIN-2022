@@ -20,6 +20,17 @@ public class UserInfo {
 
     private Integer staffid;
 
+    private StaffInfo staffInfo;
+
+    public StaffInfo getStaffInfo() {
+        return staffInfo;
+    }
+
+    public UserInfo setStaffInfo(StaffInfo staffInfo) {
+        this.staffInfo = staffInfo;
+        return this;
+    }
+
     private Map<String,String> map;
 
     public Map<String, String> getMap() {

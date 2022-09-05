@@ -42,7 +42,36 @@
 		];
 
 		$(document).ready(function(){
-			$.fn.zTree.init($("#treeDemo"), setting, null);
+			var v_zTree =$.fn.zTree.init($("#treeDemo"), setting, null);
+
+
+			$("#disPermissionBut").click(function () {
+
+				var checkedNodes = v_zTree.getCheckedNodes();
+				var params = ""
+				for (var i = 0; i < checkedNodes.length; i++) {
+					params += "&permissionIds="+checkedNodes[i].id
+				}
+
+				$.ajax({
+					url:"/disPermission?roleId=[[${roleId}]]"+params,
+					data:"null",
+					type:"get",
+					dataType:"text",
+					success:function (data) {
+						if (data!="ok"){
+							alert("权限分配失败!请联系管理员获取权限")
+							return false
+						}
+						if (confirm("权限分配成功,点击确定进行返回")) {
+							window.location.href="/admin/roles"
+						}
+					}
+
+				})
+
+			})
+
 		});
 
 	</SCRIPT>
@@ -52,6 +81,7 @@
 <div class="content_wrap">
 	<div class="zTreeDemoBackground left">
 		<div id="treeDemo" class="ztree"></div>
+		<input type="button" value="分配权限" id="disPermissionBut">
 	</div>
 </div>
 </BODY>

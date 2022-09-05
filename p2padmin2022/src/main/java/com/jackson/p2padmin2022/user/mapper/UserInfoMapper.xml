@@ -10,6 +10,27 @@
     <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
     <result column="staffId" jdbcType="INTEGER" property="staffid" />
   </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.jackson.p2padmin2022.user.model.UserInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="loginCount" jdbcType="INTEGER" property="logincount" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
+    <result column="staffId" jdbcType="INTEGER" property="staffid" />
+    <association property="staffInfo" javaType="com.jackson.p2padmin2022.user.model.StaffInfo">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="realName" jdbcType="VARCHAR" property="realname" />
+      <result column="sex" jdbcType="INTEGER" property="sex" />
+      <result column="staffNo" jdbcType="VARCHAR" property="staffno" />
+      <result column="orgId" jdbcType="INTEGER" property="orgid" />
+      <result column="jobTitle" jdbcType="VARCHAR" property="jobtitle" />
+      <result column="hireDate" jdbcType="TIMESTAMP" property="hiredate" />
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     id, username, password, createDate, loginCount, lastLoginTime, staffId
   </sql>
@@ -130,8 +151,20 @@
     update
       u_user_info
     set
-      loginCount = #{logincount} and lastLoginTime = #{lastlogintime}
+      loginCount = #{logincount},lastLoginTime = #{lastlogintime}
     where
       id = #{id}
   </update>
+
+  <select id="selectAllUser" resultMap="BaseResultMap2">
+    select
+      ui.id,ui.username,ui.loginCount,ui.lastLoginTime,si.realName,si.staffNo
+    from
+      u_user_info ui
+    inner join
+      u_staff_info si
+    on
+      ui.staffId = si.id
+  </select>
+
 </mapper>

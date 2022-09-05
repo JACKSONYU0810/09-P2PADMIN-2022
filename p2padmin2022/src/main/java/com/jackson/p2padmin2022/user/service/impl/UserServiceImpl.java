@@ -57,4 +57,9 @@ public class UserServiceImpl implements UserService {
 
         return userInfo;
     }
+
+    @Override
+    public List<UserInfo> queryAllUsers() {
+        return userInfoMapper.selectAllUser();
+    }
 }

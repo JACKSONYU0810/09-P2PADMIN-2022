@@ -16,4 +16,6 @@ public interface RolesService {
     List<RoleInfo> queryAllRoles();
 
     Object getPermissionTree(Integer roleId);
+
+    void disPermission(Integer roleId, Integer[] permissionIds);
 }

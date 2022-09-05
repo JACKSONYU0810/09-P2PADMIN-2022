@@ -3,6 +3,8 @@ package com.jackson.p2padmin2022.user.mapper;
 import com.jackson.p2padmin2022.user.model.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,4 +22,7 @@ public interface UserInfoMapper {
     UserInfo login(UserInfo userInfo);
 
     void updateLoginCountAndLoginTimeById(UserInfo userInfo);
+
+    List<UserInfo> selectAllUser();
+
 }

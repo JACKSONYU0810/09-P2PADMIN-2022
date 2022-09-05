@@ -50,4 +50,13 @@ public class RolesController {
         return object;
     }
 
+    @RequestMapping("/disPermission")
+    @ResponseBody
+    public Object disPermission(Integer roleId,Integer[] permissionIds){
+
+        rolesService.disPermission(roleId,permissionIds);
+
+        return "ok";
+    }
+
 }

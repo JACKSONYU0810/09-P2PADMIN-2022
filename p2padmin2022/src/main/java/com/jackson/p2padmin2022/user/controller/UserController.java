@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * ClassName: UserController
@@ -27,34 +28,34 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String toLogin(HttpServletRequest request,Model model,HttpServletResponse response,String isAutoLogin){
+    public String toLogin(HttpServletRequest request, Model model, HttpServletResponse response, String isAutoLogin) {
 
         Cookie[] cookies = request.getCookies();
         String admin = null;
         String password = null;
-        if (cookies==null || cookies.length<2){
+        if (cookies == null || cookies.length < 2) {
             return "login";
         }
 
         for (Cookie cookie : cookies) {
-            if ("username".equals(cookie.getName())){
+            if ("username".equals(cookie.getName())) {
                 admin = cookie.getValue();
                 continue;
             }
 
-            if ("password".equals(cookie.getName())){
+            if ("password".equals(cookie.getName())) {
                 password = cookie.getValue();
                 continue;
             }
         }
 
-        if (admin != null && password != null){
+        if (admin != null && password != null) {
             UserInfo userInfo = new UserInfo();
             userInfo.setUsername(admin);
             userInfo.setPassword(password);
             userInfo = userService.login(userInfo);
 
-            if (ObjectUtils.allNull(userInfo)){
+            if (ObjectUtils.allNull(userInfo)) {
                 model.addAttribute("message", "账户密码不匹配");
 
                 return "login";
@@ -62,14 +63,14 @@ public class UserController {
 
             request.getSession().setAttribute("userInfo", userInfo);
 
-            Cookie usernameCookie = new Cookie("username",userInfo.getUsername());
-            Cookie passwordCookie = new Cookie("password",userInfo.getPassword());
+            Cookie usernameCookie = new Cookie("username", userInfo.getUsername());
+            Cookie passwordCookie = new Cookie("password", userInfo.getPassword());
 
             usernameCookie.setPath("/");
             passwordCookie.setPath("/");
 
-            usernameCookie.setMaxAge(60*60*24*30);
-            passwordCookie.setMaxAge(60*60*24*30);
+            usernameCookie.setMaxAge(60 * 60 * 24 * 30);
+            passwordCookie.setMaxAge(60 * 60 * 24 * 30);
 
             response.addCookie(usernameCookie);
             response.addCookie(passwordCookie);
@@ -80,18 +81,18 @@ public class UserController {
     }
 
     @RequestMapping("/index")
-    public String index(){
+    public String index() {
 
         return "index";
     }
 
     @RequestMapping("/login")
-    public String login(UserInfo userInfo, String isAutoLogin, Model model, HttpServletRequest request, HttpServletResponse response){
+    public String login(UserInfo userInfo, String isAutoLogin, Model model, HttpServletRequest request, HttpServletResponse response) {
 
 
         userInfo = userService.login(userInfo);
 
-        if (ObjectUtils.allNull(userInfo)){
+        if (ObjectUtils.allNull(userInfo)) {
             model.addAttribute("message", "账户密码不匹配");
 
             return "login";
@@ -99,15 +100,15 @@ public class UserController {
 
         request.getSession().setAttribute("userInfo", userInfo);
 
-        if ("yes".equals(isAutoLogin)){
-            Cookie usernameCookie = new Cookie("username",userInfo.getUsername());
-            Cookie passwordCookie = new Cookie("password",userInfo.getPassword());
+        if ("yes".equals(isAutoLogin)) {
+            Cookie usernameCookie = new Cookie("username", userInfo.getUsername());
+            Cookie passwordCookie = new Cookie("password", userInfo.getPassword());
 
             usernameCookie.setPath("/");
             passwordCookie.setPath("/");
 
-            usernameCookie.setMaxAge(60*60*24*30);
-            passwordCookie.setMaxAge(60*60*24*30);
+            usernameCookie.setMaxAge(60 * 60 * 24 * 30);
+            passwordCookie.setMaxAge(60 * 60 * 24 * 30);
 
             response.addCookie(usernameCookie);
             response.addCookie(passwordCookie);
@@ -118,16 +119,16 @@ public class UserController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request,HttpServletResponse response){
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
-        Cookie usernameCookie = new Cookie("username",null);
-        Cookie passwordCookie = new Cookie("password",null);
+        Cookie usernameCookie = new Cookie("username", null);
+        Cookie passwordCookie = new Cookie("password", null);
 
         usernameCookie.setPath("/");
         passwordCookie.setPath("/");
 
-        usernameCookie.setMaxAge(60*60*24*30);
-        passwordCookie.setMaxAge(60*60*24*30);
+        usernameCookie.setMaxAge(60 * 60 * 24 * 30);
+        passwordCookie.setMaxAge(60 * 60 * 24 * 30);
 
         response.addCookie(usernameCookie);
         response.addCookie(passwordCookie);
@@ -138,10 +139,17 @@ public class UserController {
 
 
     @RequestMapping("/noPermission")
-    public String noPermission(Model model){
+    public String noPermission(Model model) {
         model.addAttribute("errorMessage", "对不起，您没有权限");
         model.addAttribute("helpMessage", "请联系管理员");
         return "error";
+    }
+
+    @RequestMapping("/admin/users")
+    public String queryAllUsers(Model model) {
+        List<UserInfo> userInfoList = userService.queryAllUsers();
+        model.addAttribute("userInfoList", userInfoList);
+        return "users";
     }
 
 }
