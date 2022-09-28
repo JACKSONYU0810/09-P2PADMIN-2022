@@ -1,5 +1,6 @@
 package com.jackson.p2padmin2022.user.service;
 
+import com.jackson.p2padmin2022.user.model.RoleInfo;
 import com.jackson.p2padmin2022.user.model.UserInfo;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface UserService {
 
     List<UserInfo> queryAllUsers();
 
+    List<RoleInfo> initDisRole(Integer uid);
+
+    void disRole(Integer uid, Integer[] roleIds);
 }

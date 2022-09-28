@@ -1,10 +1,13 @@
 package com.jackson.p2padmin2022.user.controller;
 
+import com.jackson.p2padmin2022.user.model.RoleInfo;
 import com.jackson.p2padmin2022.user.model.UserInfo;
 import com.jackson.p2padmin2022.user.service.UserService;
+import com.sun.deploy.panel.JreFindDialog;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -150,6 +153,25 @@ public class UserController {
         List<UserInfo> userInfoList = userService.queryAllUsers();
         model.addAttribute("userInfoList", userInfoList);
         return "users";
+    }
+
+    @RequestMapping("/toDisRole/{uid}")
+    public String toDisRole(Model model,@PathVariable Integer uid) {
+        List<RoleInfo> roleInfoList = userService.initDisRole(uid);
+        model.addAttribute("roleInfoList", roleInfoList);
+        model.addAttribute("uid", uid);
+        return "disRole";
+    }
+
+    @RequestMapping("/disRole")
+    public String disRole(Model model,Integer uid,Integer[] roleList) {
+        userService.disRole(uid,roleList);
+        model.addAttribute("message", "角色分配成功点击确定返回用户列表!");
+        model.addAttribute("url", "/admin/users");
+
+
+        return "success";
+
     }
 
 }

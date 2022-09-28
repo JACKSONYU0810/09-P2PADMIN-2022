@@ -24,4 +24,10 @@ public interface RoleInfoMapper {
     void deletePermissionByRoleId(Integer roleId);
 
     void insertPermissionByRoleIdAndPerId(Integer roleId, Integer pid);
+
+    List<RoleInfo> initDisRole(Integer uid);
+
+    void deleteRoleByUid(Integer uid);
+
+    void insertRoleByUidAndRoleIds(Integer uid, Integer roleId);
 }

@@ -62,45 +62,54 @@
                                                 <span class="lbl"></span>
                                             </label>
                                         </th>
-                                        <th>UserName</th>
-                                        <th>LoginCount</th>
-                                        <th>LastLoginTime</th>
-                                        <th>RealName</th>
-                                        <th>StaffNo</th>
-                                        <th>Function</th>
+                                        <th>申请编号</th>
+                                        <th>借款产品</th>
+                                        <th>真实姓名</th>
+                                        <th>身份证号</th>
+                                        <th>借款金额</th>
+                                        <th>借款期限(月)</th>
+                                        <th>借款目的</th>
+                                        <th>合同功能</th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-                                    <tr th:each="userInfo:${userInfoList}">
+                                    <tr th:each="creditor:${mapList}">
                                         <td class="center">
                                             <label class="pos-rel">
                                                 <input type="checkbox" class="ace" name="select"/>
                                                 <span class="lbl"></span>
                                             </label>
                                         </td>
+                                        <td th:text="${creditor.get('apply_no')}">$45</td>
+                                        <td th:text="${creditor.get('product_name')}">$45</td>
+                                        <td th:text="${creditor.get('borrower_realname')}">$45</td>
+                                        <td th:text="${creditor.get('borrower_idcard')}">$45</td>
+                                        <td th:text="${creditor.get('apply_money')}">$45</td>
+                                        <td th:text="${creditor.get('apply_term')}">$45</td>
+                                        <td th:text="${creditor.get('apply_purpose')}">$45</td>
 
-                                        <td th:text="${userInfo.username}">$45</td>
-                                        <td th:text="${userInfo.logincount==null?'0':userInfo.logincount}">$45</td>
-                                        <td th:text="${#dates.format(userInfo.lastlogintime,'yyyy-MM-dd HH:mm:ss')}">$45</td>
-                                        <td th:text="${userInfo.staffInfo.realname}">$45</td>
-                                        <td th:text="${userInfo.staffInfo.staffno}">$45</td>
                                         <td>
                                             <div class="hidden-sm hidden-xs btn-group">
-                                                <button class="btn btn-xs btn-info">
-                                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                                    修改用户
-                                                </button>
+                                                <sapn th:if="${creditor.get('loan_contract_path')!=null && creditor.get('loan_contract_path')!=''}">
+                                                    <button class="btn btn-xs btn-info viewContractButton" th:attr="filePath=${creditor.get('loan_contract_path')}">
+                                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                                        查看合同
+                                                    </button>
 
-                                                <button class="btn btn-xs btn-danger">
-                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                                    删除用户
-                                                </button>
+                                                    <button class="btn btn-xs btn-danger deleteContractButton" th:attr="creditorId=${creditor.get('id')}">
+                                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                        删除合同
+                                                    </button>
+                                                </sapn>
 
-                                                <button class="btn btn-xs btn-warning disRole" th:attr="uid=${userInfo.id}">
-                                                    <i class="ace-icon fa fa-flag bigger-120"></i>
-                                                    分配角色
-                                                </button>
+                                                <span th:if="${creditor.get('loan_contract_path')==null || creditor.get('loan_contract_path')==''}">
+																<!--因为该按钮是循环出来的,因此不能使用id选择器,故使用类选择器-->
+																<button class="btn btn-xs btn-warning createContractBut" th:attr="creditorId=${creditor.get('id')}">
+																	<i class="ace-icon fa fa-flag bigger-120 "></i>
+																	生成合同
+																</button>
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>
@@ -136,9 +145,18 @@
             $("#selectAll").prop("checked", $("input[name=select]").length == $("input[name=select]:checked").length)
         })
 
-        $(".disRole").on("click", function () {
-            window.location.href="/toDisRole/"+$(this).attr('uid')
+        $(".createContractBut").bind("click",function () {
+            window.location.href="/createContract?creditorId="+$(this).attr("creditorId")
         })
+
+        $(".viewContractButton").bind("click",function () {
+            window.location.href=$(this).attr("filePath")
+        })
+
+        $(".deleteContractButton").bind("click",function () {
+            window.location.href="/deleteContract?creditorId="+$(this).attr("creditorId")
+        })
+
     })
 </script>
 

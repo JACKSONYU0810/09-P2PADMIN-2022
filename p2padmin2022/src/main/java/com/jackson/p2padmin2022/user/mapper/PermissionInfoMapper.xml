@@ -132,7 +132,7 @@
   </update>
 
   <select id="selectPermissionMenuByUid" resultMap="BaseResultMap">
-    select
+    select distinct
       id,name,type,url,code,user_id
     from
 	  v_permission_role_user

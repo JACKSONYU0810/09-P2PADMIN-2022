@@ -84,5 +84,25 @@
     insert into u_role_permission(role_id, permission_id) value(#{roleId},#{pid})
   </insert>
 
+  <select id="initDisRole" resultType="map">
+    select
+	  ri.id,ri.name,ur.user_id uid
+    from
+	  u_role_info ri
+    left JOIN
+	  u_user_role ur
+    on
+	  ri.id = ur.role_id and user_id = #{uid}
+  </select>
 
+  <delete id="deleteRoleByUid">
+    delete from
+      u_user_role
+    where
+      user_id = #{uid}
+  </delete>
+
+  <insert id="insertRoleByUidAndRoleIds">
+    insert into u_user_role (user_id, role_id) value (#{uid},#{roleId})
+  </insert>
 </mapper>

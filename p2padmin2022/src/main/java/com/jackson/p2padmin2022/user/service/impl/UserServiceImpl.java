@@ -1,12 +1,15 @@
 package com.jackson.p2padmin2022.user.service.impl;
 
 import com.jackson.p2padmin2022.user.mapper.PermissionInfoMapper;
+import com.jackson.p2padmin2022.user.mapper.RoleInfoMapper;
 import com.jackson.p2padmin2022.user.mapper.UserInfoMapper;
 import com.jackson.p2padmin2022.user.model.PermissionInfo;
+import com.jackson.p2padmin2022.user.model.RoleInfo;
 import com.jackson.p2padmin2022.user.model.UserInfo;
 import com.jackson.p2padmin2022.user.service.UserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -29,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private PermissionInfoMapper permissionInfoMapper;
+
+    @Resource
+    private RoleInfoMapper roleInfoMapper;
 
     @Override
     public UserInfo login(UserInfo userInfo) {
@@ -62,4 +68,25 @@ public class UserServiceImpl implements UserService {
     public List<UserInfo> queryAllUsers() {
         return userInfoMapper.selectAllUser();
     }
+
+    @Override
+    public List<RoleInfo> initDisRole(Integer uid) {
+        return roleInfoMapper.initDisRole(uid);
+    }
+
+    @Transactional
+    @Override
+    public void disRole(Integer uid, Integer[] roleIds) {
+        roleInfoMapper.deleteRoleByUid(uid);
+
+        if (roleIds==null){
+            return;
+        }
+
+        for (Integer roleId : roleIds) {
+            roleInfoMapper.insertRoleByUidAndRoleIds(uid,roleId);
+        }
+    }
+
+
 }
